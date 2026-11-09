@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compaginador Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header>
+  <div class="bar">compaginador</div>
+</header>
+
+<main id="main">
+  <div class="intro">
+    <h1>Compagina tus PDFs para imprimir</h1>
+    <p>Sube las páginas de tu diseño y descarga un único PDF con el orden correcto para imprimir. Tus archivos se quedan en tu ordenador: no se envían a ningún sitio.</p>
+  </div>
+
+  <section aria-labelledby="h-up">
+    <h2 id="h-up"><span class="num">1</span> Sube tus PDFs</h2>
+    <div id="drop">
+      <p>Arrastra aquí tus archivos, o</p>
+      <label class="btn primary">Elegir archivos PDF
+        <input id="file" type="file" accept="application/pdf" multiple>
+      </label>
+      <p class="hint">Puedes subir páginas sueltas o documentos de varias páginas. Cada página se añade por separado.</p>
+    </div>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section id="pages-sec" aria-labelledby="h-order" hidden>
+    <h2 id="h-order"><span class="num">2</span> Revisa el orden</h2>
+    <p class="hint">Usa las flechas de cada página para moverla, o arrástrala. Ahora tienes <strong><span id="count">0</span> páginas</strong>.</p>
+    <div class="row">
+      <button id="sort" class="btn">Ordenar por nombre de archivo</button>
+      <button id="clear" class="btn quiet">Quitar todas</button>
+    </div>
+    <ol id="pages"></ol>
+  </section>
+
+  <section id="opts" aria-labelledby="h-opt" hidden>
+    <h2 id="h-opt"><span class="num">3</span> Elige cómo imprimir</h2>
+
+    <fieldset>
+      <legend>Tipo de compaginado</legend>
+      <label class="choice"><input type="radio" name="mode" value="booklet" checked>
+        <span><strong>Cuadernillo</strong><small>Para grapar o doblar por la mitad. Reordena las páginas y las junta de dos en dos.</small></span></label>
+      <label class="choice"><input type="radio" name="mode" value="spreads">
+        <span><strong>Páginas enfrentadas</strong><small>Junta las páginas de dos en dos sin cambiar su orden.</small></span></label>
+      <label class="choice"><input type="radio" name="mode" value="single">
+        <span><strong>Solo unir</strong><small>Un único PDF con una página por hoja, en el orden que ves arriba.</small></span></label>
+    </fieldset>
+
+    <div id="more">
+      <fieldset>
+        <legend>Lado de la encuadernación</legend>
+        <label class="choice"><input type="radio" name="binding" value="ltr" checked>
+          <span><strong>Izquierda</strong><small>Lo habitual en español.</small></span></label>
+        <label class="choice"><input type="radio" name="binding" value="rtl">
+          <span><strong>Derecha</strong><small>Manga, árabe, hebreo…</small></span></label>
+      </fieldset>
+
+      <label class="check" id="cover-row"><input type="checkbox" id="cover" checked>
+        <span>La primera página es una portada que va sola</span></label>
+
+      <details>
+        <summary>Más opciones</summary>
+        <label class="field">Espacio en el centro (milímetros)
+          <input type="number" id="gap" value="0" min="0" max="30" step="0.5" inputmode="decimal">
+        </label>
+        <label class="check"><input type="checkbox" id="marks"><span>Marcar el centro para doblar</span></label>
+      </details>
+    </div>
+  </section>
+
+  <section id="go-sec" aria-labelledby="h-go" hidden>
+    <h2 id="h-go"><span class="num">4</span> Descarga</h2>
+    <p id="summary" class="hint"></p>
+    <button id="go" class="btn primary big">Descargar PDF compaginado</button>
+    <p id="status" role="status" aria-live="polite"></p>
+    <details>
+      <summary>Ver qué página va en cada cara</summary>
+      <div id="plan"></div>
+    </details>
+  </section>
+</main>
+
+<script src="vendor/pdf-lib.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
