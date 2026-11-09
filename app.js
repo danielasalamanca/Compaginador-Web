@@ -103,7 +103,39 @@ function buildSheets() {
   return sheets;
 }
 
+function updateTips() {
+  const n = pages.length, mode = val('mode'), cover = $('cover').checked;
+  const plural = (k, a, b) => `${k} ${k === 1 ? a : b}`;
+  let html;
+  if (mode === 'single') {
+    html = '<p class="good">Con "Solo unir" sirve cualquier número de páginas.</p>';
+  } else if (mode === 'booklet') {
+    const up = Math.ceil(n / 4) * 4, down = Math.floor(n / 4) * 4;
+    const chips = [4, 8, 12, 16, 20, 24, 28, 32].filter(x => x <= Math.max(32, up)).map(x => `<span>${x}</span>`).join('');
+    if (n % 4 === 0) {
+      html = `<p class="good">✓ ${n} páginas es un número perfecto para un cuadernillo.</p>`;
+    } else {
+      html = `<p class="warn">Con ${n} páginas sobran huecos: un cuadernillo necesita un múltiplo de 4.</p><ul>
+        <li>Añade ${plural(up - n, 'página', 'páginas')} hasta llegar a <strong>${up}</strong>.</li>
+        ${down >= 4 ? `<li>O quita ${plural(n - down, 'página', 'páginas')} para quedarte en <strong>${down}</strong>.</li>` : ''}
+        <li>Si no cambias nada, se añadirán ${plural(up - n, 'página en blanco', 'páginas en blanco')} al final, y la contraportada quedará en el interior.</li></ul>`;
+    }
+    html += `<p style="margin-top:12px">Cada hoja impresa a doble cara aporta 4 páginas. Números que encajan:</p><div class="chips">${chips}</div>
+      <p style="margin-top:10px" class="hint">Pasadas unas 60–80 páginas, el cuadernillo se abulta al doblarse. Conviene dividirlo en varios.</p>`;
+  } else {
+    const ok = cover ? n % 2 === 1 : n % 2 === 0;
+    if (ok) {
+      html = `<p class="good">✓ ${n} páginas encaja bien${cover ? ' con portada sola' : ''}.</p>`;
+    } else {
+      html = `<p class="warn">Con ${n} páginas ${cover ? 'y portada sola ' : ''}quedará una página sola al final.</p>
+        <ul><li>${cover ? 'Usa un número impar' : 'Usa un número par'}: añade o quita 1 página (${n + 1} o ${Math.max(1, n - 1)}).</li></ul>`;
+    }
+  }
+  $('tips').innerHTML = html;
+}
+
 function updatePlan() {
+  updateTips();
   if (!pages.length) return;
   const sheets = buildSheets();
   const lab = i => i === null ? 'en blanco' : 'pág. ' + (i + 1);
@@ -188,3 +220,8 @@ $('sort').onclick = () => { pages.sort((a, b) => collator.compare(a.name, b.name
 $('clear').onclick = () => { pages = []; showError(''); $('status').textContent = ''; render(); $('file').focus(); };
 document.querySelectorAll('#opts input, #opts select').forEach(el => el.addEventListener('change', updatePlan));
 $('go').onclick = generate;
+$('tipsBtn').onclick = () => {
+  const open = $('tips').hidden;
+  $('tips').hidden = !open;
+  $('tipsBtn').setAttribute('aria-expanded', open);
+};

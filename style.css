@@ -70,3 +70,11 @@ input[type=number]{display:block;margin-top:6px;width:140px;min-height:48px;padd
 #status.ok{color:#1b5e20}
 @media (prefers-reduced-motion:no-preference){.btn,.choice{transition:background .15s,border-color .15s}}
 @media (max-width:480px){section{padding:18px}.btn.big{width:100%}}
+
+.tips{border:2px solid var(--lav-ink);background:#eef0ff;border-radius:12px;padding:16px 18px;margin:4px 0 8px}
+.tips p{margin:0 0 8px}
+.tips ul{margin:8px 0 0;padding-left:1.3rem}
+.tips .good{font-weight:700;color:#1b5e20}
+.tips .warn{font-weight:700}
+.tips .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tips .chips span{background:#fff;border:1.5px solid var(--lav-ink);border-radius:999px;padding:2px 12px;font-weight:700}
